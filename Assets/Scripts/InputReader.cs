@@ -13,6 +13,15 @@ public class InputReader : MonoBehaviour
         _direction = Input.GetAxisRaw("Horizontal");
         if (Input.GetButtonDown("Jump"))
             _player.Jump();
+        
+        if (Input.GetButtonDown("Fire1"))
+        {
+            _player.StartAttack();
+        }
+        else if (Input.GetButtonUp("Fire1"))
+        {
+            _player.EndAttack();
+        }
     }
 
     private void FixedUpdate()

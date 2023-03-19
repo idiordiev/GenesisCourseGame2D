@@ -1,5 +1,6 @@
 using Core.Enum;
 using Core.Tools;
+using Player.PlayerAnimation;
 using UnityEngine;
 
 namespace Player
@@ -7,6 +8,8 @@ namespace Player
     [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerEntity : MonoBehaviour
     {
+        [SerializeField] private AnimatorController _animator;
+        
         [Header("HorizontalMovement")]
         [SerializeField] private float _horizontalSpeed;
         [SerializeField] private Direction _direction;
@@ -20,6 +23,9 @@ namespace Player
         private Transform _transform;
 
         private bool _isJumping;
+
+        private Vector2 _movement;
+        private AnimationType _currentAnimationType;
     
         // Start is called before the first frame update
         private void Start()
@@ -31,9 +37,16 @@ namespace Player
         // Update is called once per frame
         private void Update()
         {
-            
+            UpdateAnimations();
         }
-        
+
+        private void UpdateAnimations()
+        {
+            _animator.PlayAnimation(AnimationType.Idle, true);
+            _animator.PlayAnimation(AnimationType.Walk, _movement.magnitude > 0);
+            _animator.PlayAnimation(AnimationType.Jump, _isJumping);
+        }
+
         private void OnCollisionEnter2D(Collision2D other)
         {
             if (other.gameObject.CompareTag("Ground") && _isJumping)
@@ -44,6 +57,7 @@ namespace Player
 
         public void MoveHorizontally(float direction)
         {
+            _movement.x = direction;
             SetDirection(direction);
             Vector2 velocity = _rigidbody.velocity;
             velocity.x = direction * _horizontalSpeed;
@@ -57,6 +71,30 @@ namespace Player
 
             _isJumping = true;
             _rigidbody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
+        }
+
+        public void StartAttack()
+        {
+            if (!_animator.PlayAnimation(AnimationType.Attack, true))
+            {
+                return;
+            }
+
+            _animator.ActionRequested += Attack;
+            _animator.AnimationEnded += EndAttack;
+        }
+        
+        private void Attack()
+        {
+            Debug.Log("Attack");
+        }
+        
+        
+        public void EndAttack()
+        {
+            _animator.ActionRequested -= Attack;
+            _animator.AnimationEnded -= EndAttack;
+            _animator.PlayAnimation(AnimationType.Attack, false);
         }
 
         private void SetDirection(float direction)
