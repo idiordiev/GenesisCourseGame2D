@@ -1,34 +1,7 @@
-Skip to content
-Search or jump to…
-Pull requests
-Issues
-Codespaces
-Marketplace
-Explore
- 
-@idiordiev 
-ASTR0-1
-/
-GameDev_Genesis_KPI
-Public
-Fork your own copy of ASTR0-1/GameDev_Genesis_KPI
-Code
-Issues
-Pull requests
-Actions
-Projects
-Security
-Insights
-GameDev_Genesis_KPI/.gitignore
-@ASTR0-1
-ASTR0-1 Update .gitignore
-Latest commit 7683d9e on Feb 20
- History
- 1 contributor
-78 lines (63 sloc)  1.47 KB
-
 # Created by https://www.toptal.com/developers/gitignore/api/unity
 # Edit at https://www.toptal.com/developers/gitignore?templates=unity
+
+.idea
 
 ### Unity ###
 # This .gitignore file should be placed at the root of your Unity project directory
